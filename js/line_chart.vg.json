@@ -1,0 +1,77 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "title": "New cases per million ",
+   "width": "container",
+  "data": {"url": "https://raw.githubusercontent.com/allenliu2021/3179_test/main/a2_line_data_new.csv"},
+  "params": [
+ {
+ "name": "location_selection",
+ "bind": {
+ "input": "select",
+ "options": [
+ null,
+ "Africa",
+ "Asia",
+ "Europe",
+ "North America",
+ "South America",
+ "Oceania"
+ ],
+ "labels":[
+ "Show All",
+ "Africa",
+ "Asia",
+ "Europe",
+ "North America",
+ "South America",
+ "Oceania"
+ ],
+ "name": "Location Selection: "
+ }
+ }
+ ],
+  "transform": [
+      {"calculate": "timeParse(datum.date, '%d/%m/%Y')", "as": "date"},{"filter": "location_selection == null || datum.location == location_selection"}
+    ],
+     "selection": {
+ "vaccine_highlight": {
+ "type": "multi",
+ "fields": ["location"],
+ "bind": "legend"
+ }
+ },
+  "mark": "line",
+  "encoding": {
+    "x": {"field": "date", "type": "temporal","title":"Date"},
+    "y": {"field": "new_cases_per_million", "type": "quantitative"},
+    "color": {"field": "location", 
+ "type": "nominal",
+ "scale": {
+ "domain": [
+ "Africa",
+ "Asia",
+ "Europe",
+ "North America",
+ "South America",
+ "Oceania"
+ 
+ ],
+ "range": [
+ "#e41a1c",
+"#984ea3",
+"#ff7f00",
+"#a6cee3",
+"#377eb8",
+"#a65628"
+ ]
+ }},
+ "opacity": {
+ "condition": {"selection": "vaccine_highlight", "value": 0.8},
+ "value": 0.2
+ },
+  "tooltip": [
+  {"field": "location", "type": "nominal"},
+  {"field": "new_cases_per_million", "type": "quantitative", "format": ".2f"}
+  ]
+  }
+}

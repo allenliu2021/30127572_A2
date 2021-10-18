@@ -1,0 +1,73 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "width":250,
+    "height":210,
+    "title":"Different types of vaccines",
+    "data": {"url": "https://raw.githubusercontent.com/allenliu2021/3179_test/main/a2_bar_chart_data.csv"},
+    "params": [
+   {
+   "name": "vacc_selection",
+   "bind": {
+   "input": "select",
+   "options": [
+   null,
+   "Johnson&Johnson",
+   "Moderna",
+   "Oxford/AstraZeneca",
+   "Pfizer/BioNTech"
+   ],
+   "labels":[
+   "Show All",
+   "Johnson&Johnson",
+   "Moderna",
+   "Oxford/AstraZeneca",
+   "Pfizer/BioNTech"
+   ],
+   "name": "Vaccine Selection: "
+   }
+   }
+   ],
+   "transform": [
+   
+   {"filter": "vacc_selection == null || datum.vaccine == vacc_selection"}],
+    "selection": {
+   "vaccine_highlight": {
+   "type": "multi",
+   "fields": ["vaccine"],
+   "bind": "legend"
+   }
+   },
+    "mark": "bar",
+    "encoding": {
+      "x": {"aggregate": "sum", "field": "total_vaccinations","title":"Total vaccinations"},
+      "y": {"field": "location","title":"Country"},
+      "color": {"field": "vaccine","title":"Vaccine",
+   "type": "nominal",
+   "scale": {
+   "domain": [
+   "Johnson&Johnson",
+   "Moderna",
+   "Oxford/AstraZeneca",
+   "Pfizer/BioNTech"
+   
+   ],
+   "range": [
+   "#e41a1c",
+   "#984ea3",
+   "#ff7f00",
+   "#377eb8"
+   ]
+   }},
+      
+      "opacity": {
+   "condition": {"selection": "vaccine_highlight", "value": 0.8},
+   "value": 0.2
+   },
+    "tooltip": [
+    {"field": "location", "type": "nominal", "title": "Country"},
+    {"field":"vaccine","type":"nominal"},
+    {"field": "total_vaccinations", "type": "quantitative", "format": ".2f"}
+    ]
+    }
+  }
+  

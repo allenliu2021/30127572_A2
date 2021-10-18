@@ -1,0 +1,82 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": "container",
+  "title": "Total cases vs. handwashing_facilities",
+  "data": {
+  "url": "https://raw.githubusercontent.com/allenliu2021/3179_test/main/A2_bubble_data1.csv"
+  },
+  "transform": [
+ 
+  {"filter": "datum.handwashing_facilities > 0"},
+ {"filter": "datum.total_cases_per_million > 1"}
+  ],
+  "selection": {
+    "conti_highlight": {
+    "type": "multi",
+    "fields": ["continent"],
+    "bind": "legend"
+    }
+    },
+  "mark": "circle",
+  "encoding": {
+  "x": {
+  "field": "handwashing_facilities",
+  "type": "quantitative",
+  "axis": {"tickCount": 2},
+  "scale": {"type": "log", "domain": [1, 100]}
+  },
+  "y": {
+  "field": "total_cases_per_million",
+  "type": "quantitative","axis": {"tickCount": 2},
+  "scale": {"type": "log", "domain": [1, 1000000]}
+  },
+  
+  "color": {
+  "field": "continent",
+  "type": "nominal",
+  
+  "scale": {
+  "domain": [
+  "North America",
+  "South America",
+  "Europe",
+  "Africa",
+  "Asia",
+  "Oceania"
+  ],
+  "range": [
+  "#e41a1c",
+  "#984ea3",
+  "#ff7f00",
+  "#a6cee3",
+  "#377eb8",
+  "#a65628"
+  ]
+  }
+  },
+
+  "size": {
+  "field": "population",
+  "type": "quantitative",
+  "scale": {
+  "type": "threshold",
+  "domain": [1000000, 10000000, 50000000, 100000000, 500000000],
+  "range": [10, 50, 150, 200, 300, 400]
+  },
+  "legend":null
+  },
+  "opacity": {
+    "condition": {"selection": "conti_highlight", "value": 0.8},
+    "value": 0.2
+    },
+  "tooltip": [
+  {"field": "location", "type": "nominal"},
+  {"field": "continent", "type": "nominal"},
+  {"field": "total_cases_per_million", "type": "quantitative", "format": ","},
+  {"field": "handwashing_facilities", "type": "quantitative", "format": ","}
+  ]
+ 
+ 
+  }
+ }
+ 

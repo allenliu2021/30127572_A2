@@ -1,0 +1,45 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "title": "Vaccinations per hundred",
+    "width": "container",
+    
+    "projection": {"type": "equirectangular"},
+    "data": {
+    "url": "https://raw.githubusercontent.com/allenliu2021/3179_test/main/custom.geo%20(1).json",
+    "format": {"type": "topojson", "feature": "custom.geo"}
+    },
+    "transform": [
+    {
+    "lookup": "properties.name",
+    "from": {
+    "data": {
+    "url": "https://raw.githubusercontent.com/allenliu2021/3179_test/main/A2_map_data_new3.csv"
+    },
+    "key": "location",
+    "fields": ["total_vaccinations", "population"]
+    }
+    },
+    {"calculate": "datum.total_vaccinations/datum.population * 100", "as": "Vaccinations per hundred"}
+    ],
+    "mark": {"type": "geoshape"},
+    "encoding": {
+    "color": {
+    "field": "Vaccinations per hundred",
+    "type": "quantitative",
+    "scale": {
+    "type": "threshold",
+    "domain": [ 1,40,80,120],
+    "range": ["#edf8fb",
+        "#b2e2e2",
+        "#66c2a4",
+        "#2ca25f",
+        "#006d2c"]
+    }
+    },
+    "tooltip": [
+    {"field": "properties.name", "type": "nominal", "title": "location"},
+    
+    {"field": "Vaccinations per hundred", "type": "quantitative", "format": ".2f"}
+    ]
+    }
+   }
